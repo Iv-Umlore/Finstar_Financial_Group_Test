@@ -38,8 +38,8 @@ namespace DatabaseAPI
 
         public static void AddBaseServices(IServiceCollection services)
         {
-            services.AddScoped<IDbInteraction, DbInteractionRealize>();
-            services.AddScoped<IDataModelInteraction, FirstInteractionRealization>();
+            services.AddSingleton<IDbInteraction, DbInteractionRealize_Cache>();
+            services.AddSingleton<IDataModelInteraction, FirstInteractionRealization>();
 
         }
     }

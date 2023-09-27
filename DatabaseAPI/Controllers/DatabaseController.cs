@@ -1,5 +1,8 @@
+using Common.Models;
+using DataAccessLayer.Models;
 using DbInteractionService;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace DatabaseAPI.Controllers
 {
@@ -16,21 +19,55 @@ namespace DatabaseAPI.Controllers
             _dataModelInteraction = dataModelInteraction;
         }
 
-        [HttpPost("/InsertNewData")]
-        public async Task<IActionResult> InsertNewData([FromBody] string jsonValues)
+        //[HttpPost("/InsertNewData_Json")]
+        //public async Task<IActionResult> InsertNewData([FromQuery] string jsonValues)
+        //{
+        //    try
+        //    {
+
+
+        //        var input = jsonValues.Select(it => new InsertInputModel() { Info = (it.V1, it.V2) }).ToList();
+        //        await _dataModelInteraction.ConvertAndSendToDB(input);
+
+        //        return Ok();
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        _logger.LogError(ex.ToString());
+        //        return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+        //    }
+        //}
+
+        /// <summary>
+        /// Считая что при оформлении ТЗ есть ошибка, предположу, что используется словарь
+        /// </summary>
+        [HttpPost("/InsertNewData_Dictionary")]
+        public async Task<IActionResult> InsertNewData([FromBody] Dictionary<string,string> jsonValues)
         {
+            try
+            {
+                var input = jsonValues.Select(it => new InsertInputModel() { Info = (it.Key, it.Value) }).ToList();
+                await _dataModelInteraction.ConvertAndSendToDB(input);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
 
 
-            return Ok();
-            
         }
 
         [HttpGet("/GetCurrentData")]
-        public async Task<ActionResult<string>> GetCurrentData([FromQuery] int? codeFilter = null, [FromQuery] string? valueFilter = null)
+        public async Task<ActionResult<string>> GetCurrentData(
+            [FromQuery] int? limit = null, [FromQuery] long? codeFilter = null, [FromQuery] string? valueFilter = "")
         {
+            List<ProductInfo> data = await _dataModelInteraction.GetFromDB(limit, codeFilter, valueFilter);
 
-
-            return Ok("result");
+            string result = JsonSerializer.Serialize(data);
+            return Ok(result);
         }
     }
 }
