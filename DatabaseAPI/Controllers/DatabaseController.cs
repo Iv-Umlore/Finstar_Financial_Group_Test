@@ -1,3 +1,4 @@
+using Common.Functions;
 using Common.Models;
 using DataAccessLayer.Models;
 using DbInteractionService;
@@ -40,7 +41,7 @@ namespace DatabaseAPI.Controllers
             }
         }
 
-        // Предполагая сложную сериализацию
+        // Если все же ошибки нет - Предполагая сложную сериализацию
         // Нет такой модели с структуры данных, прошу прощения, не нашел
         // "[ {"1": "value1"}, {"5": "value2"}, { "10": "value32"} ]"
         [HttpPost("/InsertNewData_Json")]
@@ -54,11 +55,7 @@ namespace DatabaseAPI.Controllers
                 if (jsonValues[0] != '[' || jsonValues[jsonValues.Length - 1] != ']')
                     throw new ArgumentException("Неверный формат строки - Должна начинаться с [ и заканчиваться ]");
 
-                // Regex ???
-                string[] separators = { ",\r\n", ",\t", ", ", ", \t" };
-
-                string[] goodStrings = jsonValues.Substring(1, jsonValues.Length-2)
-                    .Split(separators, StringSplitOptions.TrimEntries);
+                List<string> goodStrings = Helper.SplitStringByRegex(jsonValues.Substring(1, jsonValues.Length - 2), RegexModel.splitReq);
 
                 List<InsertInputModel> models = new List<InsertInputModel>();
 
