@@ -5,7 +5,13 @@ namespace DataAccessLayer.DBs
     internal class DbMock_AsDataStructure_WithoutSaving
     {
         private List<ProductInfo> _products = new List<ProductInfo>();
-        private int _delay = 200;
+        private int _delay;
+
+
+        public DbMock_AsDataStructure_WithoutSaving(int delay)
+        {
+            _delay = delay;
+        }
 
         public async Task ClearValues()
         {

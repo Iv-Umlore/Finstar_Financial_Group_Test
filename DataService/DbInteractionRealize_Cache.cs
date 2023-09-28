@@ -4,13 +4,13 @@ using DataService;
 
 namespace DataAccessLayer
 {
-    public class DbInteractionRealize_Cache : IDbInteraction
+    public class DbInteractionRealize_Cache : DelayAbstruct, IDbInteraction
     {
         private DbMock_AsDataStructure_WithoutSaving _db;
 
         public DbInteractionRealize_Cache()
         {
-            _db = new DbMock_AsDataStructure_WithoutSaving();
+            _db = new DbMock_AsDataStructure_WithoutSaving(_delay);
         }
 
         public async Task ClearTable()

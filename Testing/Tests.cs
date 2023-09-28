@@ -107,15 +107,17 @@ namespace Testing
         [Test]
         public void SplitByRegex_FinalTest2()
         {
+            // Arrange
             string expectedValue1 = "{\"1\": \"value1\"}";
             string expectedValue2 = "{\"5\": \"value2\"}";
             string expectedValue3 = "{\"10\": \"value32\"}";
 
             string mainString = "{\"1\": \"value1\"}, \t{\"5\": \"value2\"}, {\"10\": \"value32\"}";
 
+            // Act
             List<string> result = Helper.SplitStringByRegex(mainString, RegexModel.splitReq);
 
-
+            // Assert
             result.Count.Should().Be(3);
 
             result[0].Should().Be(expectedValue1);
