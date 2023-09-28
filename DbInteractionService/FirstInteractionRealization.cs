@@ -2,7 +2,6 @@
 using DataAccessLayer.Models;
 using DataService;
 using DbInteractionService;
-using System.Text.Json;
 
 namespace InteractionService
 {
@@ -24,8 +23,8 @@ namespace InteractionService
             List<ProductInfo> sorteredInfo = model.Select(
                 it => new ProductInfo()
                 {
-                    Code = int.Parse(it.Info.Code),
-                    Name = it.Info.Value
+                    Code = int.Parse(it.Code),
+                    Name = it.Value
                 }).OrderBy(it=>it.Code).ToList();
 
             await _db.ClearTable();
