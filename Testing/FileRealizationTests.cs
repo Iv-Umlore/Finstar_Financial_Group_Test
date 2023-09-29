@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Testing
 {
     [TestFixture]
-    public class FileRealization
+    public class FileRealizationTests
     {
         [Test]
         public void InteractionService_CacheRealization_InputTest()

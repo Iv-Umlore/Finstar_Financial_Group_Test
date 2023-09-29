@@ -34,6 +34,16 @@ namespace DatabaseAPI.Controllers
 
                 return Ok();
             }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return BadRequest(ex.Message);
+            }
+            catch (FormatException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return BadRequest("При преобразовании code к числу возникла ошибка");
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
@@ -72,6 +82,11 @@ namespace DatabaseAPI.Controllers
             {
                 _logger.LogError(ex.ToString());
                 return BadRequest(ex.Message);
+            }
+            catch (FormatException ex)
+            {
+                _logger.LogError(ex.ToString());
+                return BadRequest("При преобразовании code к числу возникла ошибка");
             }
             catch (Exception ex)
             {
